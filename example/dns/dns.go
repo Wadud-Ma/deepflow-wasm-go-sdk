@@ -24,7 +24,7 @@ import (
 	"github.com/deepflowio/deepflow-wasm-go-sdk/sdk"
 )
 
-const WASM_DNS_PROTOCOL uint8 = 1
+const WASM_DNS_PROTOCOL uint8 = 120
 
 type dnsParser struct{}
 
