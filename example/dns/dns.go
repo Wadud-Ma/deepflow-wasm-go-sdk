@@ -103,7 +103,7 @@ func (p dnsParser) OnParsePayload(ctx *sdk.ParseCtx) sdk.Action {
 		var result_arr []string
 		status := sdk.RespStatusOk
 		for _, v := range dns.Answers {
-			sdk.Info("DNS Header Type: %s, Answer: %+v", dnsmessage.TypeA.GoString(), v)
+			//sdk.Info("DNS Header Type: %s, Answer: %+v", dnsmessage.TypeA.GoString(), v)
 			if v.Header.Type == dnsmessage.TypeA || v.Header.Type == dnsmessage.TypeAAAA || v.Header.Type == dnsmessage.TypeCNAME {
 				var name string
 				switch r := v.Body.(type) {
