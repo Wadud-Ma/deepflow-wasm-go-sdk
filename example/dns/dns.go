@@ -101,24 +101,33 @@ func (p dnsParser) OnParsePayload(ctx *sdk.ParseCtx) sdk.Action {
 			return sdk.ActionAbort()
 		}
 	case sdk.DirectionResponse:
-		sdk.Info("DNS Answers: %+v", dns.Answers)
+		var result_arr []string
+		status := sdk.RespStatusOk
 		for _, v := range dns.Answers {
-			if v.Header.Type == dnsmessage.TypeA || v.Header.Type == dnsmessage.TypeAAAA {
-				var ip net.IP
+			sdk.Info("DNS Header Type: %s, Answer: %+v", dnsmessage.TypeA.GoString(), v)
+			if v.Header.Type == dnsmessage.TypeA || v.Header.Type == dnsmessage.TypeAAAA || v.Header.Type == dnsmessage.TypeCNAME {
+				var name string
 				switch r := v.Body.(type) {
 				case *dnsmessage.AAAAResource:
-					ip = r.AAAA[:]
+					name = net.IP(r.AAAA[:]).String()
 				case *dnsmessage.AResource:
-					ip = r.A[:]
+					name = net.IP(r.A[:]).String()
+				case *dnsmessage.CNAMEResource:
+					name = r.CNAME.String()
 				}
-				status := sdk.RespStatusOk
-				resp = &sdk.Response{
-					Status: &status,
-					Result: ip.String(),
+				if name != "" {
+					result_arr = append(result_arr, name)
 				}
-				break
 			}
 		}
+
+		if result_arr != nil {
+			resp = &sdk.Response{
+				Status: &status,
+				Result: strings.Join(result_arr, ";"),
+			}
+		}
+
 		if resp == nil {
 			sdk.Warn("%s:%d -> %s:%d dns response no A or AAAA record ", ctx.SrcIP.IP, ctx.SrcPort, ctx.DstIP.IP, ctx.DstPort)
 			return sdk.ActionAbort()
