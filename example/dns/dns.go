@@ -61,7 +61,7 @@ func (p dnsParser) OnCheckPayload(ctx *sdk.ParseCtx) (uint8, string) {
 	if dns.Response {
 		return 0, ""
 	}
-	return WASM_DNS_PROTOCOL, "dns"
+	return WASM_DNS_PROTOCOL, "DNS"
 }
 
 func (p dnsParser) OnParsePayload(ctx *sdk.ParseCtx) sdk.Action {
@@ -99,6 +99,7 @@ func (p dnsParser) OnParsePayload(ctx *sdk.ParseCtx) sdk.Action {
 			return sdk.ActionAbort()
 		}
 	case sdk.DirectionResponse:
+		sdk.Info("DNS Answers: %+v", dns.Answers)
 		for _, v := range dns.Answers {
 			if v.Header.Type == dnsmessage.TypeA || v.Header.Type == dnsmessage.TypeAAAA {
 				var ip net.IP
