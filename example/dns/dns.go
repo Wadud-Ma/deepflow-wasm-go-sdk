@@ -18,6 +18,7 @@ package main
 
 import (
 	"net"
+	"strings"
 
 	"golang.org/x/net/dns/dnsmessage"
 
@@ -87,8 +88,9 @@ func (p dnsParser) OnParsePayload(ctx *sdk.ParseCtx) sdk.Action {
 	case sdk.DirectionRequest:
 		for _, v := range dns.Questions {
 			if v.Type == dnsmessage.TypeA || v.Type == dnsmessage.TypeAAAA {
+				type_str := v.Type.String()
 				req = &sdk.Request{
-					ReqType:  v.Type.String(),
+					ReqType:  strings.Replace(type_str, "Type", "", 1),
 					Resource: v.Name.String(),
 				}
 				break
