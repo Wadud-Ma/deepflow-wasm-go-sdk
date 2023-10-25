@@ -97,7 +97,6 @@ func (p dnsParser) OnParsePayload(ctx *sdk.ParseCtx) sdk.Action {
 			}
 		}
 		if req == nil {
-			sdk.Warn("%s:%d -> %s:%d dns question no A or AAAA record ", ctx.SrcIP.IP, ctx.SrcPort, ctx.DstIP.IP, ctx.DstPort)
 			return sdk.ActionAbort()
 		}
 	case sdk.DirectionResponse:
@@ -129,7 +128,6 @@ func (p dnsParser) OnParsePayload(ctx *sdk.ParseCtx) sdk.Action {
 		}
 
 		if resp == nil {
-			sdk.Warn("%s:%d -> %s:%d dns response no A or AAAA record ", ctx.SrcIP.IP, ctx.SrcPort, ctx.DstIP.IP, ctx.DstPort)
 			return sdk.ActionAbort()
 		}
 	default:
