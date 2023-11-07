@@ -21,7 +21,6 @@ import (
 	"bytes"
 	"github.com/deepflowio/deepflow-wasm-go-sdk/sdk"
 	"net/http"
-	"strings"
 )
 
 type httpHook struct {
@@ -42,9 +41,9 @@ assume the http request as follow:
 */
 func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 	baseCtx := &ctx.BaseCtx
-	if baseCtx.DstPort != 8080 || !strings.HasPrefix(ctx.Path, "/user_info?") {
-		return sdk.ActionNext()
-	}
+	//if baseCtx.DstPort != 8080 || !strings.HasPrefix(ctx.Path, "/user_info?") {
+	//	return sdk.ActionNext()
+	//}
 
 	payload, err := baseCtx.GetPayload()
 	if err != nil {
