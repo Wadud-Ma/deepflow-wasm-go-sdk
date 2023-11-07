@@ -69,6 +69,7 @@ func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 	for _, cookie := range cookies {
 		if cookie.Name == "login_ucid" {
 			if cookie.Value != "" {
+				sdk.Info("========= login_ucid : %s", cookie.Value)
 				attr = append(attr, sdk.KeyVal{
 					Key: "login_ucid",
 					Val: cookie.Value,
@@ -89,6 +90,7 @@ func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 					continue
 				}
 				if ucIdMix[0] != "" {
+					sdk.Info("========= login_ucid : %s", ucIdMix[0])
 					attr = append(attr, sdk.KeyVal{
 						Key: "login_ucid",
 						Val: ucIdMix[0],
