@@ -52,6 +52,7 @@ func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 	sdk.Info("========= HttpReqCtx: {:#?}", ctx)
 	req, err := http.ReadRequest(bufio.NewReader(bytes.NewReader(payload)))
 	if err != nil {
+		sdk.Info("========= ReadRequest Error")
 		return sdk.ActionAbortWithErr(err)
 	}
 	sdk.Info("========= Request: {:#?}", req)
@@ -153,8 +154,7 @@ func (p httpHook) OnHttpResp(ctx *sdk.HttpRespCtx) sdk.Action {
 	//	}
 	//
 	//}
-	return sdk.ActionAbort()
-
+	return sdk.ActionNext()
 }
 
 func (p httpHook) OnCheckPayload(baseCtx *sdk.ParseCtx) (uint8, string) {
