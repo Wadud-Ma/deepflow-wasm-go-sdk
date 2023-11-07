@@ -50,9 +50,12 @@ func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 	if err != nil {
 		return sdk.ActionAbortWithErr(err)
 	}
-
+	sdk.Info("========= HttpReqCtx: {:#?}", ctx)
 	req, err := http.ReadRequest(bufio.NewReader(bytes.NewReader(payload)))
-	sdk.Info("========= HttpReqCtx: {:?}; Request: {:?}", ctx, req)
+	if err != nil {
+		return sdk.ActionAbortWithErr(err)
+	}
+	sdk.Info("========= Request: {:#?}", req)
 	return sdk.ActionNext()
 
 	//if err != nil {
