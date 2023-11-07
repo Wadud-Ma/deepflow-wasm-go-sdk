@@ -207,6 +207,7 @@ referer len:  2 byte
 referer:      $(referer) byte
 */
 func deserializeHttpReqCtx(paramBuf, httpReqBuf []byte) *HttpReqCtx {
+	Info("========= ReqInfo: %v", httpReqBuf)
 	reqBufLen := len(httpReqBuf)
 	if reqBufLen < 8 {
 		return nil
