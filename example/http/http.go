@@ -44,12 +44,11 @@ func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 	//if baseCtx.DstPort != 8080 || !strings.HasPrefix(ctx.Path, "/user_info?") {
 	//	return sdk.ActionNext()
 	//}
-
+	sdk.Info("========= HttpReqCtx: %+v ", ctx)
 	payload, err := baseCtx.GetPayload()
 	if err != nil {
 		return sdk.ActionAbortWithErr(err)
 	}
-	sdk.Info("========= HttpReqCtx: %+v ", ctx)
 	req, err := http.ReadRequest(bufio.NewReader(bytes.NewReader(payload)))
 	if err != nil {
 		sdk.Info("========= ReadRequest Error: %+v", payload)
