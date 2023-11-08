@@ -49,9 +49,9 @@ assume the http request as follow:
 func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 	baseCtx := &ctx.BaseCtx
 	sdk.Info("========= HttpReqCtx: %+v ", ctx)
-	if !strings.HasPrefix(ctx.Path, "/web/fe/helpcenter/moduleConfigServiceImpl/getHomePageConfig?") {
-		return sdk.ActionNext()
-	}
+	//if !strings.HasPrefix(ctx.Path, "/web/fe/helpcenter/moduleConfigServiceImpl/getHomePageConfig?") {
+	//	return sdk.ActionNext()
+	//}
 	payload, err := baseCtx.GetPayload()
 	if err != nil {
 		return sdk.ActionAbortWithErr(err)
