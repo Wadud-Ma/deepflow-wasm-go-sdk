@@ -48,7 +48,6 @@ assume the http request as follow:
 */
 func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 	baseCtx := &ctx.BaseCtx
-	sdk.Info("========= HttpReqCtx: %+v ", ctx)
 	//if !strings.HasPrefix(ctx.Path, "/web/fe/helpcenter/moduleConfigServiceImpl/getHomePageConfig?") {
 	//	return sdk.ActionNext()
 	//}
@@ -65,7 +64,6 @@ func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 
 	attr := []sdk.KeyVal{}
 	cookies := req.Cookies()
-	sdk.Info("========= Cookies: %+v", cookies)
 	for _, cookie := range cookies {
 		if cookie.Name == "login_ucid" {
 			if cookie.Value != "" {
