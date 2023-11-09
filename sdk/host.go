@@ -92,7 +92,6 @@ func (p *ParseCtx) GetPayload() ([]byte, error) {
 		return nil, errors.New("read payload fail")
 	}
 	p.payload = payload[:payloadSize]
-	Info("========= PayloadSize: %d, Payload Len: %d", payloadSize, len(payload))
 	return p.payload, nil
 }
 
