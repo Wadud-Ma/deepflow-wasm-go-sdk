@@ -57,7 +57,8 @@ func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 	}
 	req, err := http.ReadRequest(bufio.NewReader(bytes.NewReader(payload)))
 	if err != nil {
-		return sdk.ActionAbortWithErr(err)
+		//return sdk.ActionAbortWithErr(err)
+		return sdk.ActionNext()
 	}
 
 	attr := []sdk.KeyVal{}
