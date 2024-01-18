@@ -19,7 +19,9 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"github.com/deepflowio/deepflow-wasm-go-sdk/sdk"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -95,6 +97,20 @@ func (p httpHook) OnHttpReq(ctx *sdk.HttpReqCtx) sdk.Action {
 		}
 	}
 
+	if req.ContentLength > 0 {
+		body, err := io.ReadAll(req.Body)
+		if err != nil {
+			sdk.Warn("Read Request Body Fail: %v", err)
+		}
+		if len(body) != 0 {
+			m := make(map[string]interface{})
+			if jsonErr := json.Unmarshal(body, &m); jsonErr != nil {
+				sdk.Warn("JSON Unmarshal Fail: %v", jsonErr)
+			}
+			sdk.Info("Request Content Length: %d, Body: %+v", req.ContentLength, m)
+		}
+	}
+
 	return sdk.HttpReqActionAbortWithResult(nil, nil, attr)
 }
 
@@ -106,6 +122,29 @@ assume resp as follow:
 	{"code": 0, "data": {"user_id": 12345, "register_time": 1682050409}}
 */
 func (p httpHook) OnHttpResp(ctx *sdk.HttpRespCtx) sdk.Action {
+	baseCtx := &ctx.BaseCtx
+	payload, err := baseCtx.GetPayload()
+	if err != nil {
+		return sdk.ActionAbortWithErr(err)
+	}
+	resp, err := http.ReadResponse(bufio.NewReader(bytes.NewReader(payload)), nil)
+	if err != nil {
+		return sdk.ActionAbortWithErr(err)
+	}
+	if resp.ContentLength > 0 {
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			sdk.Warn("Read Response Body Fail: %v", err)
+		}
+		if len(body) != 0 {
+			m := make(map[string]interface{})
+			if jsonErr := json.Unmarshal(body, &m); jsonErr != nil {
+				sdk.Warn("JSON Unmarshal Fail: %v", jsonErr)
+			}
+			sdk.Info("Response Content Length: %d, Body: %+v", resp.ContentLength, m)
+		}
+	}
+
 	return sdk.ActionNext()
 }
 
